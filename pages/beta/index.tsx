@@ -1,9 +1,9 @@
-import LeftSideBar from "../../components/layout/leftbar";
-import MainPage from "../../components/layout/mainpage";
+import LeftSideBar from "../../components/layout/leftbar"
+import MainPage from "../../components/layout/mainpage"
 import { Container } from '../../styles/softpageessay'
 
 
-export default function MainPage() {
+export default function SoftEssay() {
     return (
         <Container>
             <LeftSideBar></LeftSideBar>

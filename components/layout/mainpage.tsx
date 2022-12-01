@@ -9,7 +9,7 @@ interface PageState {
 }
 
 
-class LeftSideBar extends React.Component<PageProps, PageState> {
+class MainPage extends React.Component<PageProps, PageState> {
     constructor(props: PageProps) {
         super(props);
         this.state = {
@@ -27,4 +27,4 @@ class LeftSideBar extends React.Component<PageProps, PageState> {
     }
   }
 
-export default LeftSideBar;
+export default MainPage;
