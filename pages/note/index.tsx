@@ -37,7 +37,7 @@ function TabPanel(props: TabPanelProps) {
             <ContentInput 
                 contentEditable 
                 suppressContentEditableWarning={true}
-                onInput={e => handlePageValue(pageValue, index, e.currentTarget.innerText, setPageValue)}
+                onInput={ (e: any) => handlePageValue(pageValue, index, e.currentTarget.innerText, setPageValue)}
             > 
             {children}
             </ContentInput>
