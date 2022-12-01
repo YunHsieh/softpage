@@ -10,7 +10,7 @@ interface BarState {
 }
 
 
-class MainPage extends React.Component<BarProps, BarState> {
+class LeftSideBar extends React.Component<BarProps, BarState> {
     constructor(props: BarProps) {
         super(props);
         this.state = {
@@ -41,4 +41,4 @@ class MainPage extends React.Component<BarProps, BarState> {
     }
   }
 
-export default MainPage;
+export default LeftSideBar;
