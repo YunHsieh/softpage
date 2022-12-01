@@ -1,11 +1,13 @@
 import LeftSideBar from "../../components/layout/leftbar";
 import MainPage from "../../components/layout/mainpage";
+import { Container } from '../../styles/softpageessay'
 
 
-export default function Home() {
+export default function MainPage() {
     return (
-        <div>
+        <Container>
             <LeftSideBar></LeftSideBar>
-        </div>
+            <MainPage></MainPage>
+        </Container>
     )
 }
