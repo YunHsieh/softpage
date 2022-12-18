@@ -1,7 +1,4 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
-## Getting Started
-
+# Softpage
 First, run the development server:
 
 ```bash
@@ -9,6 +6,25 @@ npm run dev
 # or
 yarn dev
 ```
+
+export
+```bash
+# if you run this command. you should delete .next before.
+npm run build
+# Basicly, build already include the export to out
+next export
+```
+
+# Reference by my note
+[Redux example](https://blog.logrocket.com/use-redux-next-js/)
+[next-redux-warpper GitHub](https://github.com/kirill-konshin/next-redux-wrapper)
+[MUI5 with nextjs and nextjs](https://dev.to/hajhosein/nextjs-mui-v5-typescript-tutorial-and-starter-3pab)
+[getServerSideProps v.s. getStaticProps](https://nextjs.org/docs/basic-features/data-fetching/get-server-side-props)
+
+---
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+## Getting Started
 
 ## Refers:
 [How to use material ui with nextjs](https://medium.com/nextjs/how-to-use-material-ui-with-nextjs-and-react-18-6c054ceacf77)
@@ -22,11 +38,6 @@ You can start editing the page by modifying `pages/index.tsx`. The page auto-upd
 
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
-export
-```bash
-next export -o outdir
-
-```
 
 ## Learn More
 
