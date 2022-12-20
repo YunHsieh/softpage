@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "baseUrl": ".",
+    "rootDir": ".",
+    "target": "es6",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -16,5 +18,5 @@
     "incremental": true
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/note.js"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "out", ".next"]
 }
