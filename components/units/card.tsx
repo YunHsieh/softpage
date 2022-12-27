@@ -1,6 +1,8 @@
 import React from 'react';
 import { Card, CardContent, Typography, styled } from '@mui/material';
-import { EachCardEdge } from '../../styles/card'
+import { EachCardEdge } from 'styles/card'
+import { connect } from 'react-redux';
+import { setEssayState } from 'stores/softEssay';
 
 const CardContentNoPadding = styled(CardContent)(`
   padding: 5px;
@@ -24,6 +26,8 @@ type tplotOptions = {
 
 interface CardProps {
     isHover: any;
+    essaysData: any;
+    setEssayState: any;
 }
 
 interface CardState {
@@ -32,23 +36,24 @@ interface CardState {
 
 interface TabPanelProps {
     isHover: any;
-    content: string;
+    essay: any;
 }
 
 
 function HoverWord(props: TabPanelProps) {
-    const { isHover, content, ...other } = props;
+    const { isHover, essay } = props;
     const CardWordsShow = 7;
     return (
+        // TODO: to be get more meaningful parts of the title
         <Typography variant="h4" component="div">
-            {props.isHover ? (
-                Array.from(content).length < CardWordsShow ? (
-                    content
+            { isHover ? (
+                Array.from(essay.title).length < CardWordsShow ? (
+                    essay.title
                 ) : (
-                    `${content.substring(0, CardWordsShow)}...`
+                    `${essay.title.substring(0, CardWordsShow)}...`
                 )
             ) : (
-                content.substring(0, 1)
+                essay.title.substring(0, 1)
             )}
         </Typography>
     );
@@ -56,56 +61,47 @@ function HoverWord(props: TabPanelProps) {
 
 
 class LeftSideCard extends React.Component<CardProps, CardState> {
-
     constructor(props: CardProps) {
         super(props);
-        
-        this.state = {
-            data: {
-                'a': 'H',
-                'b': 'hahahhahahha',
-                'b3': 'hahahhahahha',
-                'b2': 'hahahhahahha',
-                'b1': 'hahahhahahha',
-                'b44': 'hahahhahahha',
-                'b444': 'hahahhahahha',
-                'b4444': 'hahahhahahha',
-                'b11': 'hahahhahahha',
-                'b111': 'hahahhahahha',
-                'b1111': 'hahahhahahha',
-                'b8': 'hahahhahahha',
-                'b22': 'hahahhahahha',
-                'b222': 'hahahhahahha',
-                'b2222': 'hahahhahahha',
-                'b5': 'hahahhahahha',
-            }
-        };
     }
 
-    onClick = () => console.log('123');
+    changeEssay = (essay: any) => {
+        this.props.setEssayState(essay)
+    };
 
     render() {
-      return (
-        <div>
-            {Object.keys(this.state.data).map((x, i) => 
-                <EachCardEdge key={x}>
-                    <CardNoSelect
-                        onClick={this.onClick}
-                    >
-                        <CardContentNoPadding> 
-                            <HoverWord isHover={this.props.isHover} content={Object(this.state.data)[x]}></HoverWord>
-                            <Typography 
-                                variant="h4" 
-                                component="div" 
-                            >
-                            </Typography>
-                        </CardContentNoPadding>
-                    </CardNoSelect>
-                </EachCardEdge>
-            )}
-        </div>
-      )
+        return (
+            <div>
+                {this.props.essaysData.map((k: any, _: number) => 
+                    <EachCardEdge key={k.id}>
+                        <CardNoSelect
+                            onClick={() => this.changeEssay(k)}
+                        >
+                            <CardContentNoPadding> 
+                                <HoverWord isHover={this.props.isHover} essay={k}></HoverWord>
+                                <Typography 
+                                    variant="h4" 
+                                    component="div" 
+                                >
+                                </Typography>
+                            </CardContentNoPadding>
+                        </CardNoSelect>
+                    </EachCardEdge>
+                )}
+            </div>
+        )
     }
-  }
+}
 
-export default LeftSideCard;
+const mapStateToProps = (state: any) => ({
+    essaysData: state.essays.data
+});
+
+
+function mapDispatchToProps(dispatch: any) {
+    return {
+        setEssayState: (essay: any) => dispatch(setEssayState(essay))
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LeftSideCard);
