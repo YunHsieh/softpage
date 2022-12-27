@@ -15,6 +15,12 @@ npm run build
 next export
 ```
 
+Use the dummy data server
+```bash
+git submodule update
+# read the dummy_server/README.md
+```
+
 # Reference by my note
 [Redux example](https://blog.logrocket.com/use-redux-next-js/)
 [next-redux-warpper GitHub](https://github.com/kirill-konshin/next-redux-wrapper)
