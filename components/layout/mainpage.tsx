@@ -1,8 +1,9 @@
 import React from 'react';
-import { ContentContainer, MainContainer, TagContainer, TitleContainer } from '../../styles/mainpage';
-
+import { connect } from 'react-redux';
+import { ContentContainer, MainContainer, TagContainer, TitleContainer } from 'styles/mainpage';
 
 interface PageProps {
+    currentEssay: any;
 }
 
 interface PageState {
@@ -12,19 +13,22 @@ interface PageState {
 class MainPage extends React.Component<PageProps, PageState> {
     constructor(props: PageProps) {
         super(props);
-        this.state = {
-        };
     }
-
     render() {
-      return (
-        <MainContainer>
-          <TagContainer>Tags</TagContainer>
-          <TitleContainer>Title</TitleContainer>
-          <ContentContainer>My content</ContentContainer>
-        </MainContainer>
-      )
+        return (
+            <MainContainer>
+                {/* TODO: add tags */}
+            <TagContainer>{this.props.currentEssay.tags.join(",")}</TagContainer>
+            <TitleContainer>{this.props.currentEssay.title}</TitleContainer>
+            <ContentContainer>{this.props.currentEssay.content}</ContentContainer>
+            </MainContainer>
+        )
     }
-  }
+}
 
-export default MainPage;
+const mapStateToProps = (state: any) => ({
+    currentEssay: state.essays.currentEssay
+});
+
+
+export default connect(mapStateToProps)(MainPage);
