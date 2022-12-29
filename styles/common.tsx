@@ -1,5 +1,4 @@
-import styled, { css } from 'styled-components'
-
+import { css } from 'styled-components'
 
 export const ContentEditable = css`
     -webkit-user-modify: read-write;
