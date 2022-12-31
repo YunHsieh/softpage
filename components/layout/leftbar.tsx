@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { LeftBar, ContentEdge } from '../../styles/leftbar'
-import LeftSideCard from '../units/card'
+import { LeftBar, ContentEdge } from 'styles/leftbar'
+import LeftSideCard from 'components/units/card'
 
 interface BarProps {
 }
