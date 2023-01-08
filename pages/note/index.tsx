@@ -1,30 +1,29 @@
 import { Box, Tab, Tabs } from '@mui/material'
 import { Container, ContentInput } from '../../styles/note'
 import * as React from 'react';
-import {v4} from 'uuid';
-
+import { v4 } from 'uuid';
 
 type tplotOptions = {
     [key: string]: {
     [key: string]: string
 }}
 
-const handlePageValue = (page: tplotOptions, index: string, newValue: string, setPageValue: React.Dispatch<React.SetStateAction<string>>) => {
+interface TabPanelProps {
+    children?: React.ReactNode;
+    pageValue: tplotOptions;
+    index: string;
+    value: string;
+}
+
+const handlePageValue = (page: tplotOptions, index: string, newValue: string) => {
     page[index].title = newValue.split('\n')[0] || 'untitled'
     page[index].content = newValue
     window.localStorage.setItem('MY_PAGE_DATA', JSON.stringify(page));
 };
 
-interface TabPanelProps {
-    children?: React.ReactNode;
-    pageValue: tplotOptions;
-    setPageValue: React.Dispatch<React.SetStateAction<string>>;
-    index: string;
-    value: string;
-}
 
 function TabPanel(props: TabPanelProps) {
-    const { children, setPageValue, pageValue, value, index, ...other } = props;
+    const { children, pageValue, value, index, ...other } = props;
     return (
         <Container
             role="tabpanel"
@@ -37,7 +36,7 @@ function TabPanel(props: TabPanelProps) {
             <ContentInput 
                 contentEditable 
                 suppressContentEditableWarning={true}
-                onInput={ (e: any) => handlePageValue(pageValue, index, e.currentTarget.innerText, setPageValue)}
+                onInput={ (e: React.ChangeEvent<HTMLInputElement>) => handlePageValue(pageValue, index, e.currentTarget.innerText)}
             > 
             {children}
             </ContentInput>
@@ -84,7 +83,7 @@ export default function Home() {
             setPageValue(JSON.parse(data))
             // Get object data from localstoreage that have to parse
             setValue(Object.keys(JSON.parse(data))[0])
-        };
+        }
     },[]);
 
   return (
