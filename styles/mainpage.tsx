@@ -3,7 +3,7 @@ import { ContentEditable } from './common'
 
 export const TopContainer = styled.div`
     ${ContentEditable}
-    color: #ffffff;
+    color: #f5f5f5;
     margin-left: 20%;
     margin-right: 20%;
     padding-top: 14px;
@@ -32,4 +32,5 @@ export const TitleContainer = styled(TopContainer)`
 export const ContentContainer = styled(TopContainer)`
     margin-top: 20px;
     height: 100%;
+    white-space: pre-wrap;
 `
