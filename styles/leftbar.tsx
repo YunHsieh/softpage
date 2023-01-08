@@ -6,9 +6,9 @@ export const LeftBar = styled.div<{isHover?: boolean}>`
     background-color: #282828;
     min-height: 100vh;
     overflow-y: hidden;
-    min-width: 10vh;
-    max-width: ${props => (props.isHover ? "25%" : "50px")};
-    transition: all ${props => (props.isHover ? "2s" : "0s")};
+    min-width: 7vh;
+    max-width: ${props => (props.isHover ? "15%" : "50px")};
+    transition: all ${props => (props.isHover ? "1s" : ".1s")};
 `;
 
 export const ContentEdge = styled.div`
