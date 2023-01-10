@@ -2,35 +2,48 @@ import styled from 'styled-components'
 import { ContentEditable } from './common'
 
 export const TopContainer = styled.div`
-    ${ContentEditable}
     color: #f5f5f5;
-    margin-left: 20%;
-    margin-right: 20%;
-    padding-top: 14px;
+    display: flex;
 `
 
-export const MainContainer = styled.div`
+export const MainPageContainer = styled.div`
     position: relative;
     background-color: #1a1a1a;
+    overflow-y: scroll;
+    height: 100vh;
     width: 100%;
     display: flex;
     flex-direction: column;
 `
 
-export const TagContainer = styled(TopContainer)`
+export const EssayContainer = styled.div`
+    margin-left: 10%;
+    margin-right: 10%;
+    padding-top: 14px;
+    padding-bottom: 25px;
+`
+
+export const TagContainer = styled.div`
+    ${ContentEditable}
     border-bottom: 1.5px solid #8b8c8e;
     color: #8b8c8e;
 `
 
-export const TitleContainer = styled(TopContainer)`
+export const TitleContainer = styled.div`
+    ${ContentEditable}
     margin-top: 20px;
     font-weight: bold;
     font-size: 48px;
     border-bottom: 1.5px solid #8b8c8e;
 `
 
-export const ContentContainer = styled(TopContainer)`
+export const CompareEssayContainer = styled.div<{iscompared?: boolean, isright?: boolean}>`
+    ${props => (props.isright ? '': ContentEditable)};
     margin-top: 20px;
-    height: 100%;
+    font-size: 24px;
+    min-height: 65vh;
     white-space: pre-wrap;
+    width: ${props => (props.iscompared ? "50%" : "100%")};
+    border-left: ${props => (props.isright ? "1px solid #8b8c8e" : "0px")};
+    padding-left: ${props => (props.isright ? "10px" : "0px")};
 `
