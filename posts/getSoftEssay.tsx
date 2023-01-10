@@ -1,5 +1,3 @@
-// src/features/posts/postsSlice
-
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import axios from "axios"
 
@@ -19,10 +17,28 @@ export const fetchEssays = createAsyncThunk("posts/fetchEssays", async () => {
 })
 
 export const createEssay = createAsyncThunk("post/createEssay", async (initialPost: any) => {
-    const { id } = initialPost
+    const { title } = initialPost
     try {
-        const response = await essayReq.post(`/api/essays`);
-        if (response?.status === 201) return initialPost;
+        const response = await essayReq.post(`/api/essays`, {
+            title: title
+        });
+        if (response?.status === 201) return response?.data;
+        return `${response.status} : ${response.statusText}`;
+    } catch (error: any) {
+        return error.message
+    }
+})
+
+export const updateEssay = createAsyncThunk("put/updateEssay", async (initialPost: any) => {
+    const { id, title, content, tags } = initialPost
+    try {
+        const response = await essayReq.put(`/api/essays/${id}`, {
+            id: id,
+            title: title,
+            content: content,
+            tags: tags,
+        });
+        if (response?.status === 200) return response?.data;
         return `${response.status} : ${response.statusText}`;
     } catch (error: any) {
         return error.message
