@@ -28,6 +28,7 @@ interface PageState {
     id: string,
     title: string
     iscompared: boolean;
+    isparser: boolean;
 }
 
 
@@ -38,15 +39,24 @@ class MainPage extends React.Component<PageProps, PageState> {
         this.state = {
             title: this.props.title,
             id: this.props.id,
-            iscompared: true,
+            iscompared: false,
+            isparser: false,
         }
         this.contentRef = React.createRef();
+        this.handleIsCompare = this.handleIsCompare.bind(this)
     }
+
+    handleIsCompare(isNew: boolean) {
+        this.setState({
+            iscompared: !isNew && !!this.props.id && !this.state.iscompared,
+        })
+    }
+
     handleKeyDown = (event: any) => {
         if (event.keyCode === 13) {
             this.contentRef.current.focus()
             event.preventDefault()
-            if (this.state.id === undefined) {
+            if (!this.state.id) {
                 this.props.createEssay({
                     title: event.currentTarget.textContent
                 });
@@ -102,7 +112,7 @@ class MainPage extends React.Component<PageProps, PageState> {
                         {this.showTitle()}
                     </TitleContainer>
                     <TopContainer>
-                        <GadgetFunction></GadgetFunction>
+                        <GadgetFunction setIsCompare={this.handleIsCompare}></GadgetFunction>
                         <CompareEssayContainer
                             iscompared={this.state.iscompared}
                             onInput={this.changeEssayContent} 
