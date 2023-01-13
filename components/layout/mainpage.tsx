@@ -1,14 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { setEssayState } from 'stores/softEssay';
-import { CompareEssayContainer, 
+import GadgetFunction from 'components/units/gadgets'
+import { 
     EssayContainer, 
     MainPageContainer, 
     TagContainer, 
-    TitleContainer, 
-    TopContainer } from 'styles/mainpage';
+    TitleContainer
+} from 'styles/mainpage';
 import { createEssay, updateEssay } from 'posts/getSoftEssay'
-import GadgetFunction from 'components/units/gadgets'
+import EssayContent from './essayContent';
 
 interface EssayData {
     content: string;
@@ -21,6 +22,7 @@ interface PageProps extends EssayData {
     currentEssay: any;
     setEssayState: any;
     createEssay: any;
+    forwardedRef: any;
     updateEssay: any;
 }
 
@@ -46,14 +48,9 @@ class MainPage extends React.Component<PageProps, PageState> {
         this.handleIsCompare = this.handleIsCompare.bind(this)
     }
 
-    handleIsCompare(isNew: boolean) {
-        this.setState({
-            iscompared: !isNew && !!this.props.id && !this.state.iscompared,
-        })
-    }
-
     handleKeyDown = (event: any) => {
         if (event.keyCode === 13) {
+            console.log(this.contentRef.current)
             this.contentRef.current.focus()
             event.preventDefault()
             if (!this.state.id) {
@@ -67,6 +64,12 @@ class MainPage extends React.Component<PageProps, PageState> {
                 });
             }
         }
+    }
+
+    handleIsCompare(isNew: boolean) {
+        this.setState({
+            iscompared: !isNew && !!this.props.id && !this.state.iscompared,
+        })
     }
 
     showTitle = () => {
@@ -87,18 +90,8 @@ class MainPage extends React.Component<PageProps, PageState> {
         })
     };
 
-    changeEssayContent = () => {
-        // NOTE: div could make double new line situation.
-        let newText = ''
-        Array.from(this.contentRef.current.childNodes).forEach((element: any) => {
-            newText += element.textContent + '\n'
-        });
-        this.props.updateEssay({ 
-            ...this.props.currentEssay,
-            content: newText.substring(0, newText.length - 1),
-        })
-    };
     render() {
+        console.log('ref object ---->', this.contentRef)
         return (
             <MainPageContainer>
                 <EssayContainer>
@@ -111,24 +104,8 @@ class MainPage extends React.Component<PageProps, PageState> {
                     >
                         {this.showTitle()}
                     </TitleContainer>
-                    <TopContainer>
-                        <GadgetFunction setIsCompare={this.handleIsCompare}></GadgetFunction>
-                        <CompareEssayContainer
-                            iscompared={this.state.iscompared}
-                            onInput={this.changeEssayContent} 
-                            ref={this.contentRef}
-                        >
-                            {this.props.content}
-                        </CompareEssayContainer>
-                        {this.state.iscompared &&
-                            <CompareEssayContainer
-                                isright={true}
-                                iscompared={this.state.iscompared}
-                            >
-                                {this.props.content}
-                            </CompareEssayContainer>
-                        }
-                    </TopContainer>
+                    <GadgetFunction setIsCompare={this.handleIsCompare}></GadgetFunction>
+                    <EssayContent forwardedRef={this.contentRef} iscompared={this.state.iscompared}></EssayContent>
                 </EssayContainer>
             </MainPageContainer>
         )
