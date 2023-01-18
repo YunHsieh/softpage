@@ -28,9 +28,7 @@ interface PageProps extends EssayData {
 
 interface PageState {
     id: string,
-    title: string
-    iscompared: boolean;
-    isparser: boolean;
+    title: string,
 }
 
 
@@ -41,16 +39,12 @@ class MainPage extends React.Component<PageProps, PageState> {
         this.state = {
             title: this.props.title,
             id: this.props.id,
-            iscompared: false,
-            isparser: false,
         }
         this.contentRef = React.createRef();
-        this.handleIsCompare = this.handleIsCompare.bind(this)
     }
 
     handleKeyDown = (event: any) => {
         if (event.keyCode === 13) {
-            console.log(this.contentRef.current)
             this.contentRef.current.focus()
             event.preventDefault()
             if (!this.state.id) {
@@ -64,12 +58,6 @@ class MainPage extends React.Component<PageProps, PageState> {
                 });
             }
         }
-    }
-
-    handleIsCompare(isNew: boolean) {
-        this.setState({
-            iscompared: !isNew && !!this.props.id && !this.state.iscompared,
-        })
     }
 
     showTitle = () => {
@@ -91,7 +79,6 @@ class MainPage extends React.Component<PageProps, PageState> {
     };
 
     render() {
-        console.log('ref object ---->', this.contentRef)
         return (
             <MainPageContainer>
                 <EssayContainer>
@@ -104,8 +91,11 @@ class MainPage extends React.Component<PageProps, PageState> {
                     >
                         {this.showTitle()}
                     </TitleContainer>
-                    <GadgetFunction setIsCompare={this.handleIsCompare}></GadgetFunction>
-                    <EssayContent forwardedRef={this.contentRef} iscompared={this.state.iscompared}></EssayContent>
+                    <GadgetFunction></GadgetFunction>
+                    <EssayContent 
+                        forwardedRef={this.contentRef} 
+                    >
+                    </EssayContent>
                 </EssayContainer>
             </MainPageContainer>
         )
@@ -119,7 +109,7 @@ const mapStateToProps = (state: any) => {
         id: currentEssay.id,
         tags: currentEssay.tags,
         title: currentEssay.title,
-        content: currentEssay.content
+        content: currentEssay.content,
     }
 };
 

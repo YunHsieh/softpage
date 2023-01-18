@@ -26,7 +26,7 @@ const initialState: DataState = {
     error: null,
     tmpDataIndex: 0,
     currentEssay: {
-        title: 'untitled',
+        title: '',
         content: '',
         tags: [],
         id: ''
@@ -38,9 +38,14 @@ export const essaySlice = createSlice({
     name: 'essays',
     initialState,
     reducers: {
+        resetCurrentEssay: (state: DataState, _action) => {
+            if (state.status !== PostsStatus.Loading && state.currentEssay.id) {
+                state.currentEssay = {...state.data[state.tmpDataIndex]}
+            }
+        },
         setEssayState: (state: DataState, action) => {
             if (state.status !== PostsStatus.Loading) {
-                state.currentEssay = action.payload
+                state.currentEssay = {...initialState.currentEssay, ...action.payload}
             }
         }
     },
@@ -75,7 +80,7 @@ export const essaySlice = createSlice({
                         if (v.id === action.payload.id) {
                             state.tmpDataIndex = k
                         }
-                    }) 
+                    })
                 }
                 state.data[state.tmpDataIndex] = {
                     ...state.data[state.tmpDataIndex],
@@ -85,6 +90,6 @@ export const essaySlice = createSlice({
     }
 });
 
-export const { setEssayState } = essaySlice.actions;
+export const { setEssayState, resetCurrentEssay } = essaySlice.actions;
 
 export const selectEssayState = (state: AppState) => state.essays;

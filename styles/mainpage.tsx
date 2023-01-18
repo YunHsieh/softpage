@@ -33,17 +33,27 @@ export const TitleContainer = styled.div`
     ${ContentEditable}
     margin-top: 20px;
     font-weight: bold;
-    font-size: 48px;
+    font-size: 32px;
     border-bottom: 1.5px solid #8b8c8e;
 `
 
-export const CompareEssayContainer = styled.div<{iscompared?: boolean, isright?: boolean}>`
-    ${props => (props.isright ? '': ContentEditable)};
+export const CompareEssayContainer = styled.div<{isCompared?: boolean, isRight?: boolean}>`
+    ${props => (props.isRight ? '': ContentEditable)};
     margin-top: 20px;
     font-size: 24px;
     min-height: 65vh;
     white-space: pre-wrap;
-    width: ${props => (props.iscompared ? "50%" : "100%")};
-    border-left: ${props => (props.isright ? "1px solid #8b8c8e" : "0px")};
-    padding-left: ${props => (props.isright ? "10px" : "0px")};
+    width: ${props => (props.isCompared ? "50%" : "100%")};
+    border-left: ${props => (props.isRight ? "1px solid #8b8c8e" : "0px")};
+    padding-left: ${props => (props.isRight ? "10px" : "5px")};
+    padding-right: ${props => (props.isRight ? "5px" : "10px")};
+`
+
+export const EachSentences = styled.div`
+    ${ContentEditable};
+    border: 1px solid #8b8c8e;
+    border-radius: 10px;
+    min-height: 40px;
+    margin: 10px auto;
+    padding-left: 10px;
 `
