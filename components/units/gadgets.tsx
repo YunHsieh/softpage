@@ -2,22 +2,19 @@ import React from 'react';
 import SaveIcon from 'public/save.png'
 import CompareIcon from 'public/compare.png'
 import { connect } from 'react-redux';
-import { setEssayState } from 'stores/softEssay';
 import { GadgetContainer, GadgetItems, MyIcon, ToolsContainer } from 'styles/mainpageTools';
-
-type tplotOptions = {
-    [key: string]: string
-}
+import { setGadgetState } from 'stores/essayGadgetController';
+import { resetCurrentEssay } from 'stores/softEssay'
 
 interface GadgetProps {
-    essaysData: any;
-    setIsCompare: any;
-    setEssayState: any;
+    setGadgetState: any;
+    resetCurrentEssay: any;
     currentEssay: any;
+    isCompared: boolean;
+    isParsed: boolean;
 }
 
 interface GadgetState {
-    data: tplotOptions,
     currentEssay: any,
 }
 
@@ -27,18 +24,23 @@ class GadgetFunction extends React.Component<GadgetProps, GadgetState> {
         super(props);
     }
 
-    changeEssay = (essay: any) => {
-        this.props.setEssayState(essay)
-        this.props.setIsCompare(true)
-    };
+    changeParseState = () => {
+        if (this.props.currentEssay.id) {
+            this.props.setGadgetState({'isParsed': !this.props.isParsed})
+            this.props.resetCurrentEssay()
+        }
+    }
+
+    changeCompareState = () => {
+        if (this.props.currentEssay.id) {
+            this.props.setGadgetState({'isCompared': !this.props.isCompared})
+        }
+    }
 
     render() {
         return (
             <ToolsContainer>
-                <GadgetContainer onClick={() => this.changeEssay({})}>
-                    <GadgetItems>{'+'}</GadgetItems>
-                </GadgetContainer>
-                <GadgetContainer>
+                <GadgetContainer onClick={() => this.changeParseState()}>
                     <GadgetItems>{'{}'}</GadgetItems>
                 </GadgetContainer>
                 <GadgetContainer>
@@ -49,7 +51,9 @@ class GadgetFunction extends React.Component<GadgetProps, GadgetState> {
                     >
                     </MyIcon>
                 </GadgetContainer>
-                <GadgetContainer onClick={() => this.props.setIsCompare()}>
+                <GadgetContainer 
+                    onClick={() => this.changeCompareState()}
+                >
                     <MyIcon src={CompareIcon} draggable="false" alt="Compare your essay"></MyIcon>
                 </GadgetContainer>
             </ToolsContainer>
@@ -58,14 +62,16 @@ class GadgetFunction extends React.Component<GadgetProps, GadgetState> {
 }
 
 const mapStateToProps = (state: any) => ({
-    essaysData: state.essays.data,
-    currentEssay: state.essays.currentEssay
+    currentEssay: state.essays.currentEssay,
+    isCompared: state.essayGadGetSwtichers.isCompared,
+    isParsed: state.essayGadGetSwtichers.isParsed,
 });
 
 
 function mapDispatchToProps(dispatch: any) {
     return {
-        setEssayState: (essay: any) => dispatch(setEssayState(essay))
+        setGadgetState: (data: any) => dispatch(setGadgetState(data)),
+        resetCurrentEssay: () => dispatch(resetCurrentEssay()),
     };
 }
 
