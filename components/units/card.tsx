@@ -3,6 +3,7 @@ import { Typography } from '@mui/material';
 import { EachCardEdge, TextContainerInBar, TextInNavBar } from 'styles/card'
 import { connect } from 'react-redux';
 import { setEssayState } from 'stores/softEssay';
+import { setGadgetReset } from 'stores/essayGadgetController';
 
 type tplotOptions = {
     [key: string]: string
@@ -12,6 +13,7 @@ interface CardProps {
     isHover: any;
     essaysData: any;
     setEssayState: any;
+    setGadgetReset: any;
     currentEssay: any;
 }
 
@@ -42,12 +44,13 @@ class LeftSideCard extends React.Component<CardProps, CardState> {
     }
 
     changeEssay = (essay: any) => {
-        this.props.setEssayState(essay)
+        this.props.setEssayState(essay),
+        this.props.setGadgetReset()
     };
 
     render() {
         return (
-            <div>
+            <>
                 <div style={{borderBottom: "1px solid #555557"}}>
                     <EachCardEdge onClick={() => this.changeEssay({})}>
                         {/* <HoverWord isHover={this.props.isHover} essay={undefined}></HoverWord> */}
@@ -67,7 +70,7 @@ class LeftSideCard extends React.Component<CardProps, CardState> {
                         <HoverWord essay={k}></HoverWord>
                     </TextContainerInBar>
                 )}
-            </div>
+            </>
         )
     }
 }
@@ -80,7 +83,8 @@ const mapStateToProps = (state: any) => ({
 
 function mapDispatchToProps(dispatch: any) {
     return {
-        setEssayState: (essay: any) => dispatch(setEssayState(essay))
+        setEssayState: (essay: any) => dispatch(setEssayState(essay)),
+        setGadgetReset: (_: never) => dispatch(setGadgetReset(_))
     };
 }
 
