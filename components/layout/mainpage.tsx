@@ -22,7 +22,6 @@ interface PageProps extends EssayData {
     currentEssay: any;
     setEssayState: any;
     createEssay: any;
-    forwardedRef: any;
     updateEssay: any;
 }
 
@@ -83,7 +82,9 @@ class MainPage extends React.Component<PageProps, PageState> {
             <MainPageContainer>
                 <EssayContainer>
                     {/* TODO: add tags */}
-                    <TagContainer>{this.props.tags}</TagContainer>
+                    <TagContainer>
+                        {this.props.tags}
+                    </TagContainer>
                     {/* TODO: add placeholder */}
                     <TitleContainer 
                         onInput={this.changeEssayTitle}
@@ -91,11 +92,10 @@ class MainPage extends React.Component<PageProps, PageState> {
                     >
                         {this.showTitle()}
                     </TitleContainer>
-                    <GadgetFunction></GadgetFunction>
+                    <GadgetFunction />
                     <EssayContent 
                         forwardedRef={this.contentRef} 
-                    >
-                    </EssayContent>
+                    />
                 </EssayContainer>
             </MainPageContainer>
         )
