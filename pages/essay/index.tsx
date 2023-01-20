@@ -8,8 +8,8 @@ import { Container } from 'styles/softpageessay'
 function SoftEssay(_props: any) {
     return (
         <Container>
-            <LeftSideBar></LeftSideBar>
-            <MainPage></MainPage>
+            <LeftSideBar />
+            <MainPage />
         </Container>
     )
 }

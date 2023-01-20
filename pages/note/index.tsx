@@ -70,7 +70,7 @@ export default function Home() {
         window.localStorage.setItem('MY_PAGE_DATA', JSON.stringify({...pageValue, [pageKey]: content}));
     };
     
-    const handleDragStart = (key: string) => (event: React.DragEvent<HTMLDivElement>) => {
+    const handleDragStart = (key: string) => (_event: React.DragEvent<HTMLDivElement>) => {
         delete Object(pageValue)[key];
         setPageValue({...pageValue});
         window.localStorage.setItem('MY_PAGE_DATA', JSON.stringify(pageValue));
@@ -112,7 +112,7 @@ export default function Home() {
             </Tabs>
         </Box>
         {Object.keys(pageValue).map((x, i) =>
-            <TabPanel key={x} value={value} index={x} pageValue={pageValue} setPageValue={setPageValue}>
+            <TabPanel key={x} value={value} index={x} pageValue={pageValue}>
                 {Object(pageValue)[x].content}
             </TabPanel>
         )}

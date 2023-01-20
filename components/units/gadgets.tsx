@@ -48,13 +48,16 @@ class GadgetFunction extends React.Component<GadgetProps, GadgetState> {
                         src={SaveIcon} 
                         draggable="false" 
                         alt="Save your essay"
-                    >
-                    </MyIcon>
+                    />
                 </GadgetContainer>
                 <GadgetContainer 
                     onClick={() => this.changeCompareState()}
                 >
-                    <MyIcon src={CompareIcon} draggable="false" alt="Compare your essay"></MyIcon>
+                    <MyIcon 
+                        src={CompareIcon} 
+                        draggable="false" 
+                        alt="Compare your essay" 
+                    />
                 </GadgetContainer>
             </ToolsContainer>
         )
