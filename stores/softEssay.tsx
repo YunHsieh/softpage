@@ -3,6 +3,7 @@ import { fetchEssays, createEssay, updateEssay } from "posts/getSoftEssay"
 import { createSlice } from "@reduxjs/toolkit";
 import { PostsStatus } from "enums/posts";
 import { HYDRATE } from "next-redux-wrapper";
+import { any } from "prop-types";
 
 interface EssayData {
     content: string;
@@ -34,12 +35,21 @@ const initialState: DataState = {
     essay: ''
 }
 
+const findCurrentEssayIndex = (id: string, data: Array<any>) => {
+    let index = 0;
+    data.map((v: any, i: number) => {
+        if (v.id == id) index = i;
+    })
+    return index;
+}
+
 export const essaySlice = createSlice({
     name: 'essays',
     initialState,
     reducers: {
         resetCurrentEssay: (state: DataState, _action) => {
             if (state.status !== PostsStatus.Loading && state.currentEssay.id) {
+                state.tmpDataIndex = findCurrentEssayIndex(state.currentEssay.id, state.data)
                 state.currentEssay = {...state.data[state.tmpDataIndex]}
             }
         },
@@ -76,11 +86,7 @@ export const essaySlice = createSlice({
             .addCase(updateEssay.fulfilled, (state, action) => {
                 state.status = PostsStatus.Succeeded
                 if (state.data[state.tmpDataIndex].id !== action.payload.id) {
-                    state.data.map((v: any, k: number) => {
-                        if (v.id === action.payload.id) {
-                            state.tmpDataIndex = k
-                        }
-                    })
+                    state.tmpDataIndex = findCurrentEssayIndex(action.payload.id, state.data)
                 }
                 state.data[state.tmpDataIndex] = {
                     ...state.data[state.tmpDataIndex],

@@ -37,8 +37,9 @@ export const TitleContainer = styled.div`
     border-bottom: 1.5px solid #8b8c8e;
 `
 
-export const CompareEssayContainer = styled.div<{isCompared?: boolean, isRight?: boolean}>`
-    ${props => (props.isRight ? '': ContentEditable)};
+export const CompareEssayContainer = styled.div<{isParsed?: boolean, isCompared?: boolean, isRight?: boolean}>`
+    ${props => (props.isRight || props.isParsed ? '': ContentEditable)};
+    ${props => (props.isRight || props.isParsed ? '': ContentEditable)};
     margin-top: 20px;
     font-size: 24px;
     min-height: 65vh;

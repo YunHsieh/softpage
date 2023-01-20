@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { setEssayState } from 'stores/softEssay';
 import { CompareEssayContainer, EachSentences, TopContainer } from 'styles/mainpage';
 import { updateEssay } from 'posts/getSoftEssay';
 
@@ -14,8 +13,6 @@ interface ContentProps {
     isParsed: boolean;
     forwardedRef: any;
     updateEssay: any;
-    essaysData: any;
-    setEssayState: any;
     currentEssay: any;
 }
 
@@ -32,13 +29,24 @@ interface DivideSentence {
 
 const DivideAllSentences = (props: DivideSentence) => {
     const { content, isParsed } = props;
-    const data = content.replace(/\.\n|\./gi, '.<newline>')
+    let data = content
+    if (isParsed) {
+        data = data.replace(/\.\n|\./gi, '.<newline>')
             .replace(/\n/gi, '<newline>')
             .split('<newline>')
+    }
     return (
-        <>{ isParsed? data.map((s, i) => 
-            <EachSentences key={i}>{s}</EachSentences>
-        ): content}</>
+        <>
+            { isParsed? data.map((s: string, i: number) => 
+                <EachSentences
+                    // not allow user create new line
+                    onKeyDown={(event: any) => {
+                        event.keyCode === 13 && event.preventDefault();
+                    }}
+                    key={i}
+                >{s}</EachSentences>
+            ): content}
+        </>
     )
 }
 
@@ -47,9 +55,6 @@ class EssayContent extends React.Component<ContentProps, ContentState> {
     contentRef: React.RefObject<unknown>;
     constructor(props: ContentProps) {
         super(props);
-        this.state = {
-            content: this.props.content,
-        };
         this.contentRef = React.createRef();
     }
 
@@ -69,21 +74,21 @@ class EssayContent extends React.Component<ContentProps, ContentState> {
             <TopContainer>
                 <CompareEssayContainer
                     isCompared={this.props.isCompared}
+                    isParsed={this.props.isParsed}
                     onInput={this.changeEssayContent} 
                     ref={this.props.forwardedRef}
-                >   
+                >
                     <DivideAllSentences 
                         content={this.props.content}
                         isParsed={this.props.isParsed}
-                    >
-                    </DivideAllSentences>
+                    />
                 </CompareEssayContainer>
                 {this.props.isCompared &&
                     <CompareEssayContainer
                         isRight={true}
                         isCompared={this.props.isCompared}
                     >
-                        {this.state.content}
+                        {this.props.content}
                     </CompareEssayContainer>
                 }
             </TopContainer>
@@ -93,7 +98,6 @@ class EssayContent extends React.Component<ContentProps, ContentState> {
 
 
 const mapStateToProps = (state: any) => ({
-    essaysData: state.essays.data,
     currentEssay: state.essays.currentEssay,
     content: state.essays.currentEssay.content,
     isCompared: state.essayGadGetSwtichers.isCompared,
