@@ -5,11 +5,13 @@ import { createSlice } from "@reduxjs/toolkit";
 interface DataState {
     isCompared: boolean;
     isParsed: boolean;
+    isSaved: boolean;
 }
 
 const initialState = {
     isCompared: false,
-    isParsed: false
+    isParsed: false,
+    isSaved: false
 }
 
 export const essayGadGetSwtichers = createSlice({
