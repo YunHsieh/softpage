@@ -78,11 +78,13 @@ export const SavedDescText = styled(SavedInnerCommponets)`
     padding-left: 10px;
 `
 
-export const SavedButton = styled(SavedInnerCommponets)`
+export const SavedButton = styled(SavedInnerCommponets)<{isAllow?: boolean}>`
+    ${ProhibitSelectText};
     margin-top: 5px;
     height: 15%;
     cursor: pointer;
-    background-color: #40a85e;
+    background-color: #28a745;
+    opacity: ${props => (props.isAllow ? "1" : ".6")};
     text-align: center;
     &:hover {
         transform: scale(.95);
