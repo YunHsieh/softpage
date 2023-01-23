@@ -15,11 +15,10 @@ const initialState = {
 }
 
 export const essayGadGetSwtichers = createSlice({
-   
     name: 'essayGadGetSwtichers',
     initialState,
     reducers: {
-        setGadgetReset: (state: DataState, _action) => {
+        setGadgetReset: (_state: DataState, _action) => {
             return initialState
         },
         setGadgetState: (state: DataState, action) => {
