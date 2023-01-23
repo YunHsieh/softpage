@@ -5,12 +5,15 @@ import { connect } from 'react-redux';
 import { GadgetUnit, GadgetItems, MyIcon, SavedContainer, GadgetComponents, GadgetsContainer, SavedCommentText, SavedDescText, SavedButton } from 'styles/mainpageTools';
 import { setGadgetState } from 'stores/essayGadgetController';
 import { resetCurrentEssay } from 'stores/softEssay'
-import { Input } from '@mui/material';
+import { resetCommitted, setCommitted } from 'stores/essayCommitted';
 
 interface GadgetProps {
     setGadgetState: any;
     resetCurrentEssay: any;
     currentEssay: any;
+    comment: string;
+    setCommitted: any;
+    resetCommitted: any;
     isCompared: boolean;
     isParsed: boolean;
     isSaved: boolean;
@@ -52,7 +55,11 @@ class GadgetFunction extends React.Component<GadgetProps, GadgetState> {
     }
 
     handleSaveClick = () => {
-        this.props.setGadgetState({'isSaved': false})
+        if (this.props.comment) {
+            this.props.setGadgetState({'isSaved': false})
+            // TODO: Call api to save the committed
+            this.props.resetCommitted()
+        }
     }
 
     render() {
@@ -88,10 +95,12 @@ class GadgetFunction extends React.Component<GadgetProps, GadgetState> {
                             onKeyDown={(event: any) => {
                                 event.keyCode === 13 && event.preventDefault();
                             }}
-                        >
-                        </SavedCommentText>
-                        <SavedDescText></SavedDescText>
-                        <SavedButton onClick={this.handleSaveClick}> Save </SavedButton>
+                            onInput={(event: any) => this.props.setCommitted({'comment': event.currentTarget.textContent})}
+                        />
+                        <SavedDescText 
+                            onInput={(event: any) => this.props.setCommitted({'description': event.currentTarget.textContent})}
+                        />
+                        <SavedButton onClick={this.handleSaveClick} isAllow={!!this.props.comment}> Save </SavedButton>
                     </SavedContainer>
                 }
             </GadgetsContainer>
@@ -104,6 +113,8 @@ const mapStateToProps = (state: any) => ({
     isCompared: state.essayGadGetSwtichers.isCompared,
     isParsed: state.essayGadGetSwtichers.isParsed,
     isSaved: state.essayGadGetSwtichers.isSaved,
+    comment: state.committed.comment,
+    description: state.committed.description,
 });
 
 
@@ -111,6 +122,8 @@ function mapDispatchToProps(dispatch: any) {
     return {
         setGadgetState: (data: any) => dispatch(setGadgetState(data)),
         resetCurrentEssay: () => dispatch(resetCurrentEssay()),
+        setCommitted: (data: any) => dispatch(setCommitted(data)),
+        resetCommitted: () => dispatch(resetCommitted()),
     };
 }
 
