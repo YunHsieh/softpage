@@ -11,8 +11,22 @@ const essayReq = axios.create({
     timeout: 1000,
 });
 
-export const fetchEssays = createAsyncThunk("posts/fetchEssays", async () => {
+export const fetchEssays = createAsyncThunk("get/fetchEssays", async () => {
     const response = await essayReq.get("/api/essays")
+    return response?.data
+})
+
+export const fetchEditedEssays = createAsyncThunk("get/fetchEditedEssays", async (initialParams: any) => {
+    const { title } = initialParams;
+    const response = await essayReq.get(`/api/essays`, { params: {
+        title: title
+    }})
+    return response?.data
+})
+
+export const fetchCommittedEssays = createAsyncThunk("get/fetchCommittedEssays", async (initialParams: any) => {
+    const { id } = initialParams;
+    const response = await essayReq.get(`/api/essays/${id}/progresses`)
     return response?.data
 })
 

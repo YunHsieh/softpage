@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { ContentEditable } from './common'
+import { ContentEditable, ProhibitSelectText } from './common'
 
 export const TopContainer = styled.div`
     color: #f5f5f5;
@@ -57,4 +57,23 @@ export const EachSentences = styled.div`
     min-height: 40px;
     margin: 10px auto;
     padding-left: 10px;
+`
+
+export const ComparedEssaysContainer = styled.div`
+    ${ProhibitSelectText};
+    padding-top: 15px;
+    width: 100%;
+    cursor: pointer;
+    transition: all .3s;
+    &:hover {
+        transform: scale(0.95);
+        opacity: 0.3;
+    }
+`
+
+export const ComparedEssaysCard = styled.div`
+    background-color: #464646;
+    padding-left: 10px;
+    border-radius: 15px;
+    font-size: 14px;
 `

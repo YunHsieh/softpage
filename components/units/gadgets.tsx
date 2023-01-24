@@ -4,12 +4,16 @@ import CompareIcon from 'public/compare.png'
 import { connect } from 'react-redux';
 import { GadgetUnit, GadgetItems, MyIcon, SavedContainer, GadgetComponents, GadgetsContainer, SavedCommentText, SavedDescText, SavedButton } from 'styles/mainpageTools';
 import { setGadgetState } from 'stores/essayGadgetController';
-import { resetCurrentEssay } from 'stores/softEssay'
+import { resetComparedEssay, resetCurrentEssay } from 'stores/softEssay'
 import { resetCommitted, setCommitted } from 'stores/essayCommitted';
+import { fetchCommittedEssays, fetchEditedEssays } from 'posts/getSoftEssay';
 
 interface GadgetProps {
     setGadgetState: any;
     resetCurrentEssay: any;
+    fetchCommittedEssays: any;
+    fetchEditedEssays: any;
+    resetComparedEssay: any;
     currentEssay: any;
     comment: string;
     setCommitted: any;
@@ -40,11 +44,16 @@ class GadgetFunction extends React.Component<GadgetProps, GadgetState> {
     }
     
     changeCompareState = () => {
+        this.props.resetComparedEssay()
         if (this.props.currentEssay.id) {
             this.props.setGadgetState({
                 isCompared: !this.props.isCompared,
                 isSaved: false,
             })
+            if (!this.props.isCompared) {
+                this.props.fetchCommittedEssays({id: this.props.currentEssay.id})
+                this.props.fetchEditedEssays({title: this.props.currentEssay.title})
+            }
         }
     }
 
@@ -81,7 +90,7 @@ class GadgetFunction extends React.Component<GadgetProps, GadgetState> {
                     <GadgetUnit 
                         onClick={() => this.changeCompareState()}
                     >
-                        <MyIcon 
+                        <MyIcon
                             src={CompareIcon} 
                             draggable="false" 
                             alt="Compare your essay" 
@@ -121,9 +130,12 @@ const mapStateToProps = (state: any) => ({
 function mapDispatchToProps(dispatch: any) {
     return {
         setGadgetState: (data: any) => dispatch(setGadgetState(data)),
-        resetCurrentEssay: () => dispatch(resetCurrentEssay()),
+        resetCurrentEssay: () => dispatch(resetCurrentEssay({})),
         setCommitted: (data: any) => dispatch(setCommitted(data)),
-        resetCommitted: () => dispatch(resetCommitted()),
+        resetCommitted: () => dispatch(resetCommitted({})),
+        fetchCommittedEssays: (data: any) => dispatch(fetchCommittedEssays(data)),
+        fetchEditedEssays: (data: any) => dispatch(fetchEditedEssays(data)),
+        resetComparedEssay: () => dispatch(resetComparedEssay({})),
     };
 }
 
