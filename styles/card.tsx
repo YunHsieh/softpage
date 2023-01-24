@@ -27,9 +27,9 @@ export const TextContainerInBar = styled.div<{selected?: boolean}>`
     padding-right: 0.5vh;
     padding-top: 1vh;
     padding-left: 1.5vh;
-    ${TriggerBehavior}
-    ${ProhibitSelectText}
-    background-color: ${props => (props.selected ? '#464646' : '#282828')};;
+    ${TriggerBehavior};
+    ${ProhibitSelectText};
+    background-color: ${props => (props.selected ? '#464646' : '#282828')};
 `
 
 export const TextContainerInBarSelected = styled(TextContainerInBar)`
