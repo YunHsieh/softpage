@@ -21,11 +21,21 @@ git submodule update
 # read the dummy_server/README.md
 ```
 
+## Additional info
+```bash
+# update all the packages to the latest
+npm install -g npm-check-updates
+ncu --upgrade
+npm install
+```
+
 # Reference by my note
 [Redux example](https://blog.logrocket.com/use-redux-next-js/)  
 [next-redux-warpper GitHub](https://github.com/kirill-konshin/next-redux-wrapper)  
 [MUI5 with nextjs and nextjs](https://dev.to/hajhosein/nextjs-mui-v5-typescript-tutorial-and-starter-3pab)  
 [getServerSideProps v.s. getStaticProps](https://nextjs.org/docs/basic-features/data-fetching/get-server-side-props)  
+[Update All of the packages][https://medium.com/subjective-developer/update-all-node-packages-to-latest-aa128396b92b] 
+
 
 ---
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
