@@ -17,6 +17,7 @@ type tplotOptions = {
 interface ContentProps {
     content: string;
     editedData: any[],
+    saveTitle: any;
     comparedEssay: any,
     isCompared: boolean;
     isParsed: boolean;
@@ -88,6 +89,7 @@ class EssayContent extends React.Component<ContentProps, ContentState> {
         return (
             <TopContainer>
                 <CompareEssayContainer
+                    onMouseDown={this.props.saveTitle}
                     isCompared={this.props.isCompared}
                     isParsed={this.props.isParsed}
                     onInput={this.changeEssayContent} 

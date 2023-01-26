@@ -42,20 +42,24 @@ class MainPage extends React.Component<PageProps, PageState> {
         this.contentRef = React.createRef();
     }
 
+    saveTitle = () => {
+        if (!this.state.id) {
+            this.props.createEssay({
+                title: this.props.title,
+            });
+        } else {
+            this.props.updateEssay({
+                ...this.props.currentEssay,
+                title: this.props.title,
+            });
+        }
+    }
+
     handleKeyDown = (event: any) => {
         if (event.keyCode === 13) {
             this.contentRef.current.focus()
             event.preventDefault()
-            if (!this.state.id) {
-                this.props.createEssay({
-                    title: event.currentTarget.textContent
-                });
-            } else {
-                this.props.updateEssay({
-                    ...this.props.currentEssay,
-                    title: event.currentTarget.textContent,
-                });
-            }
+            this.saveTitle()
         }
     }
 
@@ -93,7 +97,8 @@ class MainPage extends React.Component<PageProps, PageState> {
                         {this.showTitle()}
                     </TitleContainer>
                     <GadgetFunction />
-                    <EssayContent 
+                    <EssayContent
+                        saveTitle={this.saveTitle}
                         forwardedRef={this.contentRef} 
                     />
                 </EssayContainer>
