@@ -1,8 +1,17 @@
 import React from 'react';
 import SaveIcon from 'public/save.png'
 import CompareIcon from 'public/compare.png'
+import LinkIcon from 'public/link.png'
 import { connect } from 'react-redux';
-import { GadgetUnit, GadgetItems, MyIcon, SavedContainer, GadgetComponents, GadgetsContainer, SavedCommentText, SavedDescText, SavedButton } from 'styles/mainpageTools';
+import { GadgetUnit, 
+    GadgetItems, 
+    MyIcon, 
+    SavedContainer, 
+    GadgetComponents, 
+    GadgetsContainer, 
+    SavedCommentText, 
+    SavedDescText, 
+    SavedButton } from 'styles/mainpageTools';
 import { setGadgetState } from 'stores/essayGadgetController';
 import { resetComparedEssay, resetCurrentEssay } from 'stores/softEssay'
 import { resetCommitted, setCommitted } from 'stores/essayCommitted';
@@ -71,6 +80,10 @@ class GadgetFunction extends React.Component<GadgetProps, GadgetState> {
         }
     }
 
+    handleShare = () => {
+        navigator.clipboard.writeText(`${window.location.href}${this.props.currentEssay.id}`)
+    }
+
     render() {
         return (
             <GadgetsContainer>
@@ -94,6 +107,15 @@ class GadgetFunction extends React.Component<GadgetProps, GadgetState> {
                             src={CompareIcon} 
                             draggable="false" 
                             alt="Compare your essay" 
+                        />
+                    </GadgetUnit>
+                    <GadgetUnit 
+                        onClick={() => this.handleShare()}
+                    >
+                        <MyIcon
+                            src={LinkIcon} 
+                            draggable="false" 
+                            alt="Copy link into clipboard" 
                         />
                     </GadgetUnit>
                 </GadgetComponents>
