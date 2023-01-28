@@ -2,6 +2,7 @@ import { fetchEssays } from "posts/getSoftEssay";
 import { wrapper } from "store";
 import LeftSideBar from "components/layout/leftbar"
 import MainPage from "components/layout/mainpage"
+import UserAlert from 'components/layout/alertness'
 import { Container } from 'styles/softpageessay'
 
 
@@ -10,10 +11,11 @@ function SoftEssay(_props: any) {
         <Container>
             <LeftSideBar />
             <MainPage />
+            <UserAlert />
         </Container>
     )
 }
-  
+
 
 export const getStaticProps = wrapper.getStaticProps((store) =>
     async ({ params }) => {
