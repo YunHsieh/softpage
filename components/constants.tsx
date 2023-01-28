@@ -1,0 +1,1 @@
+export const ALERT_DISPLAY_TIME = 3000;
