@@ -5,10 +5,13 @@ import {
     ComparedEssaysContainer, 
     CompareEssayContainer, 
     EachSentences, 
+    EditorRecommandedWords, 
+    RemaindWords, 
     TopContainer } from 'styles/mainpage';
 import { updateEssay } from 'posts/getSoftEssay';
 import moment from 'moment';
-import { setComparedEssay } from 'stores/softEssay';
+import { setComparedEssay, setComparedParsed } from 'stores/softEssay';
+import { lcs, showDifferenct } from 'helps/utils';
 
 type tplotOptions = {
     [key: string]: string
@@ -16,30 +19,57 @@ type tplotOptions = {
 
 interface ContentProps {
     content: string;
-    editedData: any[],
+    editedData: any[];
     saveTitle: any;
-    comparedEssay: any,
+    comparedEssay: any;
     isCompared: boolean;
     isParsed: boolean;
     forwardedRef: any;
     updateEssay: any;
+    comparedParsed: string[];
     setComparedEssay: any;
+    setComparedParsed: any;
     currentEssay: any;
 }
 
 interface ContentState {
-    data: tplotOptions,
-    currentEssay: any,
-    content: string,
+    data: tplotOptions;
+    currentEssay: any;
+    content: string;
 }
 
 interface DivideSentence {
     content: string;
     isParsed: boolean;
+    isComparsed: boolean;
+    comparedParsed: string[];
+}
+
+interface ComparedResultProps {
+    comparedParsed: any[];
+}
+
+
+const ComparedEssayResult = (props: ComparedResultProps) => {
+    const { comparedParsed } = props;
+    return (<>
+        {comparedParsed.map((text: string, i: number) => {
+            if (!text) {
+                return 
+            }
+            if (text.match(/<deleted>/gi)) {
+                return <RemaindWords key={i}>{text.replace(/<deleted>/gi, '')}</RemaindWords>
+            } else if (text.match(/<fixed>/gi)) {
+                return <EditorRecommandedWords key={i}>{text.replace(/<fixed>/gi, '')}</EditorRecommandedWords>
+            } else {
+                return text
+            }
+        })}
+    </>)
 }
 
 const DivideAllSentences = (props: DivideSentence) => {
-    const { content, isParsed } = props;
+    const { content, isParsed, isComparsed, comparedParsed } = props;
     let data = content
     if (isParsed) {
         data = data.replace(/\.\n|\./gi, '.<newline>')
@@ -56,7 +86,9 @@ const DivideAllSentences = (props: DivideSentence) => {
                     }}
                     key={i}
                 >{s}</EachSentences>
-            ): content}
+            ): (isComparsed && comparedParsed.length > 0)?
+                <ComparedEssayResult comparedParsed={comparedParsed}/>
+            : content}
         </>
     )
 }
@@ -83,6 +115,12 @@ class EssayContent extends React.Component<ContentProps, ContentState> {
 
     handleChoiseCompareEssay = (essay: any) => {
         this.props.setComparedEssay(essay)
+        const a = essay.content.replace(/(\w+)/gi, '<split>$1<split>').split('<split>')
+        const b = this.props.currentEssay.content.replace(/(\w+)/gi, '<split>$1<split>').split('<split>')
+        const [matrix, prev] = lcs(a, b)
+        this.props.setComparedParsed(
+            showDifferenct(a, b, matrix, prev)
+        )
     }
 
     render() {
@@ -98,6 +136,8 @@ class EssayContent extends React.Component<ContentProps, ContentState> {
                     <DivideAllSentences 
                         content={this.props.content}
                         isParsed={this.props.isParsed}
+                        isComparsed={this.props.isCompared}
+                        comparedParsed={this.props.comparedParsed}
                     />
                 </CompareEssayContainer>
                 {this.props.isCompared &&
@@ -131,6 +171,7 @@ const mapStateToProps = (state: any) => ({
     isParsed: state.essayGadGetSwtichers.isParsed,
     editedData: state.essays.editedData,
     comparedEssay: state.essays.comparedEssay,
+    comparedParsed: state.essays.comparedParsed,
 });
 
 
@@ -138,6 +179,7 @@ function mapDispatchToProps(dispatch: any) {
     return {
         updateEssay: (essay: any) => dispatch(updateEssay(essay)),
         setComparedEssay: (essay: any) => dispatch(setComparedEssay(essay)),
+        setComparedParsed: (essay: any) => dispatch(setComparedParsed(essay)),
     };
 }
 

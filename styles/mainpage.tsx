@@ -38,8 +38,7 @@ export const TitleContainer = styled.div`
 `
 
 export const CompareEssayContainer = styled.div<{isParsed?: boolean, isCompared?: boolean, isRight?: boolean}>`
-    ${props => (props.isRight || props.isParsed ? '': ContentEditable)};
-    ${props => (props.isRight || props.isParsed ? '': ContentEditable)};
+    ${props => (props.isRight || props.isParsed || props.isCompared ? '': ContentEditable)};
     margin-top: 20px;
     font-size: 24px;
     min-height: 65vh;
@@ -76,4 +75,17 @@ export const ComparedEssaysCard = styled.div`
     padding-left: 10px;
     border-radius: 15px;
     font-size: 14px;
+`
+
+export const RemaindWords = styled.div`
+    text-decoration-line: line-through;
+    color: gray;
+    display: inline;
+    white-space: pre-wrap;
+`
+
+export const EditorRecommandedWords = styled.div`
+    color: #E1D400;
+    display: inline;
+    white-space: pre-wrap;
 `

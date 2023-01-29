@@ -1,11 +1,18 @@
 import { AppState } from "store";
-import { fetchEssays, createEssay, updateEssay } from "posts/getSoftEssay"
+import { 
+    fetchEssays, 
+    createEssay, 
+    updateEssay, 
+    fetchEditedEssays, 
+    fetchCommittedEssays, 
+    fetchCurrentEssay } from "posts/getSoftEssay"
 import { createSlice } from "@reduxjs/toolkit";
 import { PostsStatus } from "enums/posts";
 import { HYDRATE } from "next-redux-wrapper";
-import { any } from "prop-types";
 
 interface EssayData {
+    updatedAt: string;
+    createdAt: string;
     content: string;
     tags: Array<string>;
     title: string;
@@ -14,8 +21,12 @@ interface EssayData {
 
 interface DataState {
     currentEssay: EssayData;
+    comparedEssay: EssayData;
     essay: string;
     data: any[];
+    committedData: any[];
+    editedData: any[];
+    comparedParsed: string[];
     status: PostsStatus;
     error: any;
     tmpDataIndex: number;
@@ -23,16 +34,23 @@ interface DataState {
 
 const initialState: DataState = {
     data: [],
+    committedData: [],
+    editedData: [],
+    comparedParsed: [],
     status: PostsStatus.Idle,
     error: null,
     tmpDataIndex: 0,
+    comparedEssay: {
+        content: '',
+        id: '',
+    },
     currentEssay: {
         title: '',
         content: '',
         tags: [],
         id: ''
     },
-    essay: ''
+    AfterComparedEssay: ''
 }
 
 const findCurrentEssayIndex = (id: string, data: Array<any>) => {
@@ -57,6 +75,16 @@ export const essaySlice = createSlice({
             if (state.status !== PostsStatus.Loading) {
                 state.currentEssay = {...initialState.currentEssay, ...action.payload}
             }
+        },
+        setComparedEssay: (state: DataState, action) => {
+            state.comparedEssay = action.payload
+        },
+        setComparedParsed: (state: DataState, action) => {
+            state.comparedParsed = action.payload
+        },
+        resetComparedEssay: (state: DataState, _action) => {
+            state.comparedEssay = initialState.comparedEssay
+            state.comparedParsed = initialState.comparedParsed
         }
     },
     extraReducers: builder => {
@@ -71,12 +99,20 @@ export const essaySlice = createSlice({
             })
             .addCase(fetchEssays.fulfilled, (state, action) => {
                 state.status = PostsStatus.Succeeded
-                state.data = action.payload;
-                state.currentEssay = action.payload[0];
+                state.data = action.payload
+                state.currentEssay = action.payload[0]
             })
             .addCase(fetchEssays.rejected, (state, action) => {
                 state.status = PostsStatus.Failed
                 state.error = action.error.message
+            })
+            .addCase(fetchCommittedEssays.fulfilled, (state, action) => {
+                state.status = PostsStatus.Succeeded
+                state.committedData = action.payload
+            })
+            .addCase(fetchEditedEssays.fulfilled, (state, action) => {
+                state.status = PostsStatus.Succeeded
+                state.editedData = [...state.committedData, ...action.payload]
             })
             .addCase(createEssay.fulfilled, (state, action) => {
                 state.status = PostsStatus.Succeeded
@@ -96,6 +132,11 @@ export const essaySlice = createSlice({
     }
 });
 
-export const { setEssayState, resetCurrentEssay } = essaySlice.actions;
+export const { 
+    setComparedParsed, 
+    setEssayState, 
+    resetCurrentEssay, 
+    setComparedEssay, 
+    resetComparedEssay } = essaySlice.actions;
 
 export const selectEssayState = (state: AppState) => state.essays;
