@@ -16,9 +16,12 @@ import { setGadgetState } from 'stores/essayGadgetController';
 import { resetComparedEssay, resetCurrentEssay } from 'stores/softEssay'
 import { resetCommitted, setCommitted } from 'stores/essayCommitted';
 import { fetchCommittedEssays, fetchEditedEssays } from 'posts/getSoftEssay';
+import { setUpdateAlertState } from 'stores/alertness';
+import { ALERT_DISPLAY_TIME } from 'components/constants';
 
 interface GadgetProps {
     setGadgetState: any;
+    setUpdateAlertState: any;
     resetCurrentEssay: any;
     fetchCommittedEssays: any;
     fetchEditedEssays: any;
@@ -77,11 +80,19 @@ class GadgetFunction extends React.Component<GadgetProps, GadgetState> {
             this.props.setGadgetState({'isSaved': false})
             // TODO: Call api to save the committed
             this.props.resetCommitted()
+        } else {
+            this.props.setUpdateAlertState({
+                isDisplay: true, 
+                title: 'Enter Comment, Please',
+            })
+            setTimeout(() => this.props.setUpdateAlertState({isDisplay: false}), ALERT_DISPLAY_TIME)
         }
     }
 
     handleShare = () => {
         navigator.clipboard.writeText(`${window.location.href}${this.props.currentEssay.id}`)
+        this.props.setUpdateAlertState({isDisplay: true, title: 'Copied Link'})
+        setTimeout(() => this.props.setUpdateAlertState({isDisplay: false}), ALERT_DISPLAY_TIME)
     }
 
     render() {
@@ -158,6 +169,7 @@ function mapDispatchToProps(dispatch: any) {
         fetchCommittedEssays: (data: any) => dispatch(fetchCommittedEssays(data)),
         fetchEditedEssays: (data: any) => dispatch(fetchEditedEssays(data)),
         resetComparedEssay: () => dispatch(resetComparedEssay({})),
+        setUpdateAlertState: (alertState: any) => dispatch(setUpdateAlertState(alertState)),
     };
 }
 
