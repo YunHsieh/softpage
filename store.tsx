@@ -2,14 +2,21 @@ import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import { reducers } from "./stores";
 import logger from "redux-logger"
 import { createWrapper } from "next-redux-wrapper";
+import { axiosMiddleware } from "helps/interceptors";
 
 // Initialize the store data
 const preloadedState = {}
 
-const makeStore = () =>
+
+export const makeStore = () =>
     configureStore({
         reducer: reducers,
-        middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+        middleware: (getDefaultMiddleware) => {
+            return getDefaultMiddleware().concat(
+                logger,
+                axiosMiddleware,
+            )
+        },
         preloadedState,
         devTools: process.env.STAGE === "dev",
     });
