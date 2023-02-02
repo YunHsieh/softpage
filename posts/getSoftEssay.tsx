@@ -1,18 +1,18 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import axios from "axios"
+import { essayReq } from 'helps/customAxios'
 
-const BASE_URL = process.env.HOST || "http://localhost:8000"
-const essayReq = axios.create({
-    baseURL: BASE_URL,
-    headers: { 
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ASDFA`,
-    },
-    timeout: 1000,
-});
+export const fetchEssays = createAsyncThunk("get/fetchEssays", async (_, thunkAPI) => {
+    try {
+        const response = await essayReq.get(`/api/essays/`)
+        return response?.data
+    } catch (error: any) {
+        return thunkAPI.rejectWithValue({ error: error.message })
+    }
+})
 
-export const fetchEssays = createAsyncThunk("get/fetchEssays", async () => {
-    const response = await essayReq.get("/api/essays")
+export const fetchCurrentEssay = createAsyncThunk("get/fetchCurrentEssays", async (initialParams: any) => {
+    const { id } = initialParams;
+    const response = await essayReq.get(`/api/essays/${id}`)
     return response?.data
 })
 
@@ -30,7 +30,7 @@ export const fetchCommittedEssays = createAsyncThunk("get/fetchCommittedEssays",
     return response?.data
 })
 
-export const createEssay = createAsyncThunk("post/createEssay", async (initialPost: any) => {
+export const createEssay = createAsyncThunk("post/createEssay", async (initialPost: any, thunkAPI) => {
     const { title } = initialPost
     try {
         const response = await essayReq.post(`/api/essays`, {
@@ -39,7 +39,7 @@ export const createEssay = createAsyncThunk("post/createEssay", async (initialPo
         if (response?.status === 201) return response?.data;
         return `${response.status} : ${response.statusText}`;
     } catch (error: any) {
-        return error.message
+        return thunkAPI.rejectWithValue({ error: error.message })
     }
 })
 
