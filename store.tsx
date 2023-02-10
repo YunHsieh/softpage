@@ -1,8 +1,8 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import { reducers } from "./stores";
-import logger from "redux-logger"
+import logger from "redux-logger";
 import { createWrapper } from "next-redux-wrapper";
-import { axiosMiddleware } from "helps/interceptors";
+import { axiosMiddleware } from "helps/customAxios";
 
 // Initialize the store data
 const preloadedState = {}
