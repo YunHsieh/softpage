@@ -44,13 +44,10 @@ export const createEssay = createAsyncThunk("post/createEssay", async (initialPo
 })
 
 export const updateEssay = createAsyncThunk("put/updateEssay", async (initialPost: any) => {
-    const { id, title, content, tags } = initialPost
+    const { id } = initialPost
     try {
         const response = await essayReq.put(`/api/essays/${id}`, {
-            id: id,
-            title: title,
-            content: content,
-            tags: tags,
+            ...initialPost,
         });
         if (response?.status === 200) return response?.data;
         return `${response.status} : ${response.statusText}`;

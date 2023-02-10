@@ -43,16 +43,12 @@ class MainPage extends React.Component<PageProps, PageState> {
     }
 
     saveTitle = () => {
-        if (!this.state.id) {
-            this.props.createEssay({
-                title: this.props.title,
-            });
-        } else {
-            this.props.updateEssay({
-                ...this.props.currentEssay,
-                title: this.props.title,
-            });
-        }
+        !this.state.id? this.props.createEssay({
+            title: this.props.title,
+        }) : this.props.updateEssay({
+            ...this.props.currentEssay,
+            title: this.props.title,
+        });
     }
 
     handleKeyDown = (event: any) => {
