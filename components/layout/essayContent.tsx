@@ -147,13 +147,17 @@ class EssayContent extends React.Component<ContentProps, ContentState> {
                     >
                         {
                             this.props.comparedEssay?.content || 
-                            Object.keys(this.props.editedData).map((key: string, i) => 
-                                <ComparedEssaysContainer key={i} onClick={(e) => this.handleChoiseCompareEssay(this.props.editedData[key])}>
-                                    <ComparedEssaysCard>
-                                        <div>Editor: {this.props.editedData[key].author?.username}</div>
-                                        <div>Update time: {moment(this.props.editedData[key].updated_at).format('YYYY-MM-DD HH:mm:ss')}</div>
-                                    </ComparedEssaysCard>
-                                </ComparedEssaysContainer>
+                            Object.keys(this.props.editedData).map((key: any, i) => 
+                                 this.props.currentEssay.id === this.props.editedData[key].id ||
+                                    <ComparedEssaysContainer 
+                                        key={i} 
+                                        onClick={() => this.handleChoiseCompareEssay(this.props.editedData[key])}
+                                    >
+                                        <ComparedEssaysCard>
+                                            <div>Editor: {this.props.editedData[key].author?.username}</div>
+                                            <div>Update time: {moment(this.props.editedData[key].updated_at).format('YYYY-MM-DD HH:mm:ss')}</div>
+                                        </ComparedEssaysCard>
+                                    </ComparedEssaysContainer>
                             )
                         }
                     </CompareEssayContainer>
