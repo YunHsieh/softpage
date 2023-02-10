@@ -74,6 +74,8 @@ export const essaySlice = createSlice({
         setEssayState: (state: DataState, action) => {
             if (state.status !== PostsStatus.Loading) {
                 state.currentEssay = {...initialState.currentEssay, ...action.payload}
+                state.tmpDataIndex = findCurrentEssayIndex(action.payload.id, state.data)
+                state.data[state.tmpDataIndex] = state.currentEssay
             }
         },
         setComparedEssay: (state: DataState, action) => {
@@ -105,6 +107,11 @@ export const essaySlice = createSlice({
             .addCase(fetchEssays.rejected, (state, action) => {
                 state.status = PostsStatus.Failed
                 state.error = action.error.message
+            })
+            .addCase(fetchCurrentEssay.fulfilled, (state, action) => {
+                state.status = PostsStatus.Succeeded
+                state.data = [action.payload]
+                state.currentEssay = action.payload
             })
             .addCase(fetchCommittedEssays.fulfilled, (state, action) => {
                 state.status = PostsStatus.Succeeded
