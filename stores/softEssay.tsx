@@ -6,7 +6,7 @@ import {
     fetchEditedEssays, 
     fetchCommittedEssays, 
     fetchCurrentEssay } from "posts/getSoftEssay"
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
 import { PostsStatus } from "enums/posts";
 import { HYDRATE } from "next-redux-wrapper";
 
@@ -53,8 +53,11 @@ const initialState: DataState = {
     AfterComparedEssay: ''
 }
 
-const findCurrentEssayIndex = (id: string, data: Array<any>) => {
-    let index = 0;
+const findCurrentEssayIndex = (state: any, id: string) => {
+    const data = current(state.data) || []
+    let index = state.tmpDataIndex || 0
+    if (data[index].id === id) return index;
+    index = -1
     data.map((v: any, i: number) => {
         if (v.id == id) index = i;
     })
@@ -67,15 +70,19 @@ export const essaySlice = createSlice({
     reducers: {
         resetCurrentEssay: (state: DataState, _action) => {
             if (state.status !== PostsStatus.Loading && state.currentEssay.id) {
-                state.tmpDataIndex = findCurrentEssayIndex(state.currentEssay.id, state.data)
+                state.tmpDataIndex = findCurrentEssayIndex(state, state.currentEssay.id)
                 state.currentEssay = {...state.data[state.tmpDataIndex]}
             }
         },
         setEssayState: (state: DataState, action) => {
             if (state.status !== PostsStatus.Loading) {
                 state.currentEssay = {...initialState.currentEssay, ...action.payload}
-                state.tmpDataIndex = findCurrentEssayIndex(action.payload.id, state.data)
-                state.data[state.tmpDataIndex] = state.currentEssay
+                const newIndex = findCurrentEssayIndex(state, action.payload.id)
+                // NOTE: Case index = -1, The user is creating the new essay. 
+                if (![-1, newIndex].includes(newIndex)) {
+                    state.tmpDataIndex = newIndex
+                    state.data[newIndex] = state.currentEssay
+                }
             }
         },
         setComparedEssay: (state: DataState, action) => {
@@ -128,9 +135,7 @@ export const essaySlice = createSlice({
             })
             .addCase(updateEssay.fulfilled, (state, action) => {
                 state.status = PostsStatus.Succeeded
-                if (state.data[state.tmpDataIndex].id !== action.payload.id) {
-                    state.tmpDataIndex = findCurrentEssayIndex(action.payload.id, state.data)
-                }
+                state.tmpDataIndex = findCurrentEssayIndex(state, action.payload.id)
                 state.data[state.tmpDataIndex] = {
                     ...state.data[state.tmpDataIndex],
                     ...action.payload,
