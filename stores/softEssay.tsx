@@ -79,7 +79,7 @@ export const essaySlice = createSlice({
                 state.currentEssay = {...initialState.currentEssay, ...action.payload}
                 const newIndex = findCurrentEssayIndex(state, action.payload.id)
                 // NOTE: Case index = -1, The user is creating the new essay. 
-                if (![-1, newIndex].includes(newIndex)) {
+                if (newIndex !== -1) {
                     state.tmpDataIndex = newIndex
                     state.data[newIndex] = state.currentEssay
                 }
