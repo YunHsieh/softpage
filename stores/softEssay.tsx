@@ -53,6 +53,7 @@ const initialState: DataState = {
     AfterComparedEssay: ''
 }
 
+
 const findCurrentEssayIndex = (state: any, id: string) => {
     const data = current(state.data) || []
     let index = state.tmpDataIndex || 0
@@ -63,6 +64,7 @@ const findCurrentEssayIndex = (state: any, id: string) => {
     })
     return index;
 }
+
 
 export const essaySlice = createSlice({
     name: 'essays',
@@ -138,7 +140,7 @@ export const essaySlice = createSlice({
                 state.tmpDataIndex = findCurrentEssayIndex(state, action.payload.id)
                 state.data[state.tmpDataIndex] = {
                     ...state.data[state.tmpDataIndex],
-                    ...action.payload,
+                    content: action.payload.content,
                 }
             })
     }
