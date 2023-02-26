@@ -41,7 +41,10 @@ interface ContentState {
 interface DivideSentence {
     content: string;
     isParsed: boolean;
-    isComparsed: boolean;
+    saveTitle: any;
+    changeEssayContent: any;
+    forwardedRef: any;
+    isCompared: boolean;
     comparedParsed: string[];
 }
 
@@ -69,7 +72,14 @@ const ComparedEssayResult = (props: ComparedResultProps) => {
 }
 
 const DivideAllSentences = (props: DivideSentence) => {
-    const { content, isParsed, isComparsed, comparedParsed } = props;
+    const { 
+        content, 
+        isParsed, 
+        isCompared, 
+        comparedParsed,
+        saveTitle,
+        changeEssayContent,
+        forwardedRef } = props;
     let data = content
     if (isParsed) {
         data = data.replace(/\.\n|\./gi, '.<newline>')
@@ -77,7 +87,13 @@ const DivideAllSentences = (props: DivideSentence) => {
             .split('<newline>')
     }
     return (
-        <>
+        <CompareEssayContainer
+            onMouseDown={saveTitle}
+            isCompared={isCompared}
+            isParsed={isParsed}
+            onInput={changeEssayContent}
+            ref={forwardedRef}
+        >
             { isParsed? data.map((s: string, i: number) => 
                 <EachSentences
                     // not allow user create new line
@@ -86,10 +102,10 @@ const DivideAllSentences = (props: DivideSentence) => {
                     }}
                     key={i}
                 >{s}</EachSentences>
-            ): (isComparsed && comparedParsed.length > 0)?
+            ): (isCompared && comparedParsed.length > 0)?
                 <ComparedEssayResult comparedParsed={comparedParsed}/>
             : content}
-        </>
+        </CompareEssayContainer>
     )
 }
 
@@ -126,20 +142,15 @@ class EssayContent extends React.Component<ContentProps, ContentState> {
     render() {
         return (
             <TopContainer>
-                <CompareEssayContainer
-                    onMouseDown={this.props.saveTitle}
-                    isCompared={this.props.isCompared}
+                <DivideAllSentences
+                    content={this.props.content}
                     isParsed={this.props.isParsed}
-                    onInput={this.changeEssayContent} 
-                    ref={this.props.forwardedRef}
-                >
-                    <DivideAllSentences 
-                        content={this.props.content}
-                        isParsed={this.props.isParsed}
-                        isComparsed={this.props.isCompared}
-                        comparedParsed={this.props.comparedParsed}
-                    />
-                </CompareEssayContainer>
+                    isCompared={this.props.isCompared}
+                    comparedParsed={this.props.comparedParsed}
+                    saveTitle={this.props.saveTitle}
+                    changeEssayContent={this.changeEssayContent}
+                    forwardedRef={this.props.forwardedRef}
+                />
                 {this.props.isCompared &&
                     <CompareEssayContainer
                         isRight={true}
