@@ -26,7 +26,15 @@ export const fetchEditedEssays = createAsyncThunk("get/fetchEditedEssays", async
 
 export const fetchCommittedEssays = createAsyncThunk("get/fetchCommittedEssays", async (initialParams: any) => {
     const { id } = initialParams;
-    const response = await essayReq.get(`/api/essays/${id}/progresses`)
+    const response = await essayReq.get(`/api/essays/${id}/histories`)
+    return response?.data
+})
+
+export const createCommittedEssays = createAsyncThunk("post/SaveCommittedEssays", async (initialPost: any) => {
+    const { id } = initialPost;
+    const response = await essayReq.post(`/api/essays/${id}/histories`, {
+        ...initialPost
+    })
     return response?.data
 })
 
@@ -35,9 +43,9 @@ export const createEssay = createAsyncThunk("post/createEssay", async (initialPo
     try {
         const response = await essayReq.post(`/api/essays`, {
             title: title
-        });
+        })
         if (response?.status === 201) return response?.data;
-        return `${response.status} : ${response.statusText}`;
+        return `${response.status} : ${response.statusText}`
     } catch (error: any) {
         return thunkAPI.rejectWithValue({ error: error.message })
     }
@@ -49,7 +57,7 @@ export const updateEssay = createAsyncThunk("put/updateEssay", async (initialPos
         const response = await essayReq.put(`/api/essays/${id}`, {
             ...initialPost,
         });
-        if (response?.status === 200) return response?.data;
+        if (response?.status === 202) return response?.data;
         return `${response.status} : ${response.statusText}`;
     } catch (error: any) {
         return error.message
