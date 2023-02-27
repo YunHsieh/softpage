@@ -3,8 +3,7 @@ import {
     fetchEssays, 
     createEssay, 
     updateEssay, 
-    fetchEditedEssays, 
-    fetchCommittedEssays, 
+    fetchHistoryEssays, 
     fetchCurrentEssay } from "posts/getSoftEssay"
 import { createSlice, current } from "@reduxjs/toolkit";
 import { PostsStatus } from "enums/posts";
@@ -24,8 +23,7 @@ interface DataState {
     comparedEssay: EssayData;
     essay: string;
     data: any[];
-    committedData: any[];
-    editedData: any[];
+    historyData: any[];
     comparedParsed: string[];
     status: PostsStatus;
     error: any;
@@ -34,8 +32,7 @@ interface DataState {
 
 const initialState: DataState = {
     data: [],
-    committedData: [],
-    editedData: [],
+    historyData: [],
     comparedParsed: [],
     status: PostsStatus.Idle,
     error: null,
@@ -122,13 +119,9 @@ export const essaySlice = createSlice({
                 state.data = [action.payload]
                 state.currentEssay = action.payload
             })
-            .addCase(fetchCommittedEssays.fulfilled, (state, action) => {
+            .addCase(fetchHistoryEssays.fulfilled, (state, action) => {
                 state.status = PostsStatus.Succeeded
-                state.committedData = action.payload
-            })
-            .addCase(fetchEditedEssays.fulfilled, (state, action) => {
-                state.status = PostsStatus.Succeeded
-                state.editedData = [...state.committedData, ...action.payload]
+                state.historyData = action.payload
             })
             .addCase(createEssay.fulfilled, (state, action) => {
                 state.status = PostsStatus.Succeeded
