@@ -16,21 +16,13 @@ export const fetchCurrentEssay = createAsyncThunk("get/fetchCurrentEssays", asyn
     return response?.data
 })
 
-export const fetchEditedEssays = createAsyncThunk("get/fetchEditedEssays", async (initialParams: any) => {
-    const { title } = initialParams;
-    const response = await essayReq.get(`/api/essays`, { params: {
-        title: title
-    }})
-    return response?.data
-})
-
-export const fetchCommittedEssays = createAsyncThunk("get/fetchCommittedEssays", async (initialParams: any) => {
+export const fetchHistoryEssays = createAsyncThunk("get/fetchHistoryEssays", async (initialParams: any) => {
     const { id } = initialParams;
     const response = await essayReq.get(`/api/essays/${id}/histories`)
     return response?.data
 })
 
-export const createCommittedEssays = createAsyncThunk("post/SaveCommittedEssays", async (initialPost: any) => {
+export const createHistoryEssays = createAsyncThunk("post/SaveCommittedEssays", async (initialPost: any) => {
     const { id } = initialPost;
     const response = await essayReq.post(`/api/essays/${id}/histories`, {
         ...initialPost

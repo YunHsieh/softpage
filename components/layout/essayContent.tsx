@@ -19,7 +19,7 @@ type tplotOptions = {
 
 interface ContentProps {
     content: string;
-    editedData: any[];
+    historyData: any[];
     saveTitle: any;
     comparedEssay: any;
     isCompared: boolean;
@@ -158,15 +158,15 @@ class EssayContent extends React.Component<ContentProps, ContentState> {
                     >
                         {
                             this.props.comparedEssay?.content || 
-                            Object.keys(this.props.editedData).map((key: any, i) => 
-                                 this.props.currentEssay.id === this.props.editedData[key].id ||
+                            Object.keys(this.props.historyData).map((key: any, i) => 
+                                 this.props.currentEssay.id === this.props.historyData[key].id ||
                                     <ComparedEssaysContainer 
                                         key={i} 
-                                        onClick={() => this.handleChoiseCompareEssay(this.props.editedData[key])}
+                                        onClick={() => this.handleChoiseCompareEssay(this.props.historyData[key])}
                                     >
                                         <ComparedEssaysCard>
-                                            <div>Editor: {this.props.editedData[key].author?.username}</div>
-                                            <div>Update time: {moment(this.props.editedData[key].updated_at).format('YYYY-MM-DD HH:mm:ss')}</div>
+                                            <div>Editor: {this.props.historyData[key].author?.username}</div>
+                                            <div>Update time: {moment(this.props.historyData[key].updated_at).format('YYYY-MM-DD HH:mm:ss')}</div>
                                         </ComparedEssaysCard>
                                     </ComparedEssaysContainer>
                             )
@@ -184,7 +184,7 @@ const mapStateToProps = (state: any) => ({
     content: state.essays.currentEssay.content,
     isCompared: state.essayGadGetSwtichers.isCompared,
     isParsed: state.essayGadGetSwtichers.isParsed,
-    editedData: state.essays.editedData,
+    historyData: state.essays.historyData,
     comparedEssay: state.essays.comparedEssay,
     comparedParsed: state.essays.comparedParsed,
 });
